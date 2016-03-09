@@ -13,6 +13,11 @@ Libraries:
 	-subprocess
 	-threading
 
+-Things to do:
+	-Works for every subnet
+	-Isolates active without grep
+	-Read about subprocess
+
 '''
 
 import sys, subprocess, threading
