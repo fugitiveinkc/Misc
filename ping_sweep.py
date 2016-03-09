@@ -25,20 +25,25 @@ class ip_validation(threading.Thread): #Inherents from Thread so that instances 
 	def __init__(self, ip):
 		threading.Thread.__init__(self)
 		self.ip = ip
+		self.status = None
 	def run(self):
-		print self.ip #When start() is called, this function is ran.  Test for now.
+		process = subprocess.call(['ping','-c','2',self.ip],stdout=subprocess.PIPE)
+		if process == 0:
+			self.status = "Active"
+		else:
+			self.status = "Inactive"
 		
 threads = []
 while True:
 	start, end = int(sys.argv[1]), int(sys.argv[2])
-	for ip in range(start, end+1):
-		thread = ip_validation('192.168.1.' + str(ip))
-		threads.append(thread)
+	for ip in range(start, end+1): #IP specified range
+		thread = ip_validation('192.168.1.' + str(ip)) #Start a thread and check if ping is succesful
+		threads.append(thread) #Save threads
 		thread.start() #starts thread
 	break
 
 for x in threads:
 	x.join() #waits until all threads are terminated
-
+	print x.ip + ' is ' + x.status
 
 		
